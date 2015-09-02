@@ -20,12 +20,13 @@ public class TestSequencer extends AppCompatActivity {
         this.m_text = (TextView) this.findViewById(R.id.text);
         this.m_rect = this.findViewById(R.id.rect);
 
-        sequence();
+//        sequence();
 //        parallel();
 //        sequenceMultipleTarget();
 //        parallelMultipleTarget();
 //        sequenceWithParallel();
 //        parallelWithSequences();
+        size();
     }
 
 
@@ -135,21 +136,33 @@ public class TestSequencer extends AppCompatActivity {
         // will play both of these sequences at the same time
         AnimationSequencer.newParallel()
                 .insert(AnimationSequencer.newSequence()
-                        .target(this.m_text)
-                        .y(400)
-                        .x(300)
-                        .rotationY(360)
-                        .alpha(0)
-                        .alpha(1)
+                                .target(this.m_text)
+                                .y(400)
+                                .x(300)
+                                .rotationY(360)
+                                .alpha(0)
+                                .alpha(1)
                 )
                 .insert(AnimationSequencer.newSequence()
-                        .target(this.m_rect)
-                        .x(100)
-                        .y(300)
-                        .rotationX(360)
-                        .alpha(0)
-                        .alpha(1)
+                                .target(this.m_rect)
+                                .x(100)
+                                .y(300)
+                                .rotationX(360)
+                                .alpha(0)
+                                .alpha(1)
                 )
+
+                .setStartDelay(2000)
+                .start();
+    }
+
+    protected void size() {
+        AnimationSequencer.newSequence()
+                .target(this.m_rect)
+                .moveTo(700, 300)
+                .width(200, 600)
+                .height(200, 500)
+                .size(600, 500, 200, 200)
 
                 .setStartDelay(2000)
                 .start();

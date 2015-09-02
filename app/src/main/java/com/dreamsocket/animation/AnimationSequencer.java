@@ -3,6 +3,9 @@ package com.dreamsocket.animation;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
@@ -261,6 +264,79 @@ public class AnimationSequencer {
                 .target(this.m_target)
                 .to("scaleX", p_value, p_duration, p_startDelay)
                 .to("scaleY", p_value, p_duration, p_startDelay));
+    }
+
+    public AnimationSequencer width(int p_start, int p_end) {
+        return this.width(p_start, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer width(int p_start, int p_end, int p_duration) {
+        return this.width(p_start, p_end, p_duration, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer width(int p_start, int p_end, int p_duration, int p_startDelay) {
+        if(this.m_target != null && this.m_target instanceof View) {
+            final View v = (View)this.m_target;
+            final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+            ValueAnimator animator = ValueAnimator.ofInt(p_start, p_end);
+            animator.setDuration(p_duration);
+            animator.setStartDelay(p_startDelay);
+            animator.setInterpolator(this.m_interpolator);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    layoutParams.width = (Integer)animation.getAnimatedValue();
+                    v.requestLayout();
+                }
+            });
+            this.m_masterAnimationList.add(animator);
+        }
+        return this;
+    }
+
+    public AnimationSequencer height(int p_start, int p_end) {
+        return this.height(p_start, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer height(int p_start, int p_end, int p_duration) {
+        return this.height(p_start, p_end, p_duration, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer height(int p_start, int p_end, int p_duration, int p_startDelay) {
+        if(this.m_target != null && this.m_target instanceof View) {
+            final View v = (View)this.m_target;
+            final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+            ValueAnimator animator = ValueAnimator.ofInt(p_start, p_end);
+            animator.setDuration(p_duration);
+            animator.setStartDelay(p_startDelay);
+            animator.setInterpolator(this.m_interpolator);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    layoutParams.height = (Integer)animation.getAnimatedValue();
+                    v.requestLayout();
+                }
+            });
+            this.m_masterAnimationList.add(animator);
+        }
+        return this;
+    }
+
+    public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight) {
+        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, kDEFAULT_DURATION, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight, int p_duration) {
+        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, p_duration, kDEFAULT_DELAY);
+    }
+
+    public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight, int p_duration, int p_startDelay) {
+        return this.insert(
+                AnimationSequencer.newParallel()
+                        .target(this.m_target)
+                        .width(p_startWidth, p_endWidth, p_duration, p_startDelay)
+                        .height(p_startHeight, p_endHeight, p_duration, p_startDelay)
+        );
     }
 
 
