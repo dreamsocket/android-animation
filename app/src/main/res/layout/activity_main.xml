@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <TextView
+        android:id="@+id/text"
+        android:textSize="40dp"
+        android:text="Sequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <View
+        android:id="@+id/rect"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#ff0000"
+        android:layout_marginLeft="300dp"
+        />
+
+
+</RelativeLayout>
