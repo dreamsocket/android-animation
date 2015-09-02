@@ -15,13 +15,11 @@ import java.util.ArrayList;
  * Created by keithpeters on 9/1/15.
  */
 public class AnimationSequencer {
-    protected final int kDEFAULT_DURATION = 1000;
-    protected final int kDEFAULT_DELAY = 0;
+    protected int m_defaultDuration = 1000;
+    protected int m_defaultStartDelay = 0;
 
     protected AnimatorSet m_masterAnimatorSet;
     protected ArrayList<Animator> m_masterAnimationList;
-    protected AnimatorSet m_currentAnimatorSet;
-    protected ArrayList<Animator> m_currentAnimationList;
     protected Boolean m_isPlaying;
     protected Object m_target;
     protected String m_masterPlayMode;
@@ -48,12 +46,30 @@ public class AnimationSequencer {
         return this;
     }
 
+    public AnimationSequencer setDefaultDuration(int p_value) {
+        this.m_defaultDuration = p_value;
+        return this;
+    }
+
+    public int getDefaultDuration() {
+        return this.m_defaultDuration;
+    }
+
+    public AnimationSequencer setDefaultStartDelay(int p_value) {
+        this.m_defaultStartDelay = p_value;
+        return this;
+    }
+
+    public int getDefaultStartDelay() {
+        return this.m_defaultStartDelay;
+    }
+
     public AnimationSequencer fromTo(String p_property, float p_start, float p_end) {
-        return this.fromTo(p_property, p_start, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.fromTo(p_property, p_start, p_end, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer fromTo(String p_property, float p_start, float p_end, int p_duration) {
-        return this.fromTo(p_property, p_start, p_end, p_duration, kDEFAULT_DELAY);
+        return this.fromTo(p_property, p_start, p_end, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer fromTo(String p_property, float p_start, float p_end, int p_duration, int p_startDelay) {
@@ -68,11 +84,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer to(String p_property, float p_end) {
-        return this.to(p_property, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to(p_property, p_end, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer to(String p_property, float p_end, int p_duration) {
-        return this.to(p_property, p_end, p_duration, kDEFAULT_DELAY);
+        return this.to(p_property, p_end, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer to(String p_property, float p_end, int p_duration, int p_startDelay) {
@@ -141,11 +157,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer alpha(float p_value) {
-        return this.to("alpha", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("alpha", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer alpha(float p_value, int p_duration) {
-        return this.to("alpha", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("alpha", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer alpha(float p_value, int p_duration, int p_startDelay) {
@@ -153,11 +169,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer x(float p_value) {
-        return this.to("x", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("x", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer x(float p_value, int p_duration) {
-        return this.to("x", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("x", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer x(float p_value, int p_duration, int p_startDelay) {
@@ -165,11 +181,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer y(float p_value) {
-        return this.to("y", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("y", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer y(float p_value, int p_duration) {
-        return this.to("y", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("y", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer y(float p_value, int p_duration, int p_startDelay) {
@@ -177,11 +193,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer moveTo(float p_x, float p_y) {
-        return this.moveTo(p_x, p_y, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.moveTo(p_x, p_y, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer moveTo(float p_x, float p_y, int p_duration) {
-        return this.moveTo(p_x, p_y, p_duration, kDEFAULT_DELAY);
+        return this.moveTo(p_x, p_y, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer moveTo(float p_x, float p_y, int p_duration, int p_startDelay) {
@@ -192,11 +208,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer rotation(float p_value) {
-        return this.to("rotation", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("rotation", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotation(float p_value, int p_duration) {
-        return this.to("rotation", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("rotation", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotation(float p_value, int p_duration, int p_startDelay) {
@@ -204,11 +220,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer rotationX(float p_value) {
-        return this.to("rotationX", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("rotationX", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotationX(float p_value, int p_duration) {
-        return this.to("rotationX", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("rotationX", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotationX(float p_value, int p_duration, int p_startDelay) {
@@ -216,11 +232,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer rotationY(float p_value) {
-        return this.to("rotationY", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("rotationY", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotationY(float p_value, int p_duration) {
-        return this.to("rotationY", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("rotationY", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer rotationY(float p_value, int p_duration, int p_startDelay) {
@@ -228,11 +244,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer scaleX(float p_value) {
-        return this.to("scaleX", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("scaleX", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scaleX(float p_value, int p_duration) {
-        return this.to("scaleX", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("scaleX", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scaleX(float p_value, int p_duration, int p_startDelay) {
@@ -240,11 +256,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer scaleY(float p_value) {
-        return this.to("scaleY", p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.to("scaleY", p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scaleY(float p_value, int p_duration) {
-        return this.to("scaleY", p_value, p_duration, kDEFAULT_DELAY);
+        return this.to("scaleY", p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scaleY(float p_value, int p_duration, int p_startDelay) {
@@ -252,11 +268,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer scale(float p_value) {
-        return this.scale(p_value, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.scale(p_value, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scale(float p_value, int p_duration) {
-        return this.scale(p_value, p_duration, kDEFAULT_DELAY);
+        return this.scale(p_value, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer scale(float p_value, int p_duration, int p_startDelay) {
@@ -267,11 +283,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer width(int p_start, int p_end) {
-        return this.width(p_start, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.width(p_start, p_end, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer width(int p_start, int p_end, int p_duration) {
-        return this.width(p_start, p_end, p_duration, kDEFAULT_DELAY);
+        return this.width(p_start, p_end, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer width(int p_start, int p_end, int p_duration, int p_startDelay) {
@@ -295,11 +311,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer height(int p_start, int p_end) {
-        return this.height(p_start, p_end, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.height(p_start, p_end, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer height(int p_start, int p_end, int p_duration) {
-        return this.height(p_start, p_end, p_duration, kDEFAULT_DELAY);
+        return this.height(p_start, p_end, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer height(int p_start, int p_end, int p_duration, int p_startDelay) {
@@ -323,11 +339,11 @@ public class AnimationSequencer {
     }
 
     public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight) {
-        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, kDEFAULT_DURATION, kDEFAULT_DELAY);
+        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, m_defaultDuration, m_defaultStartDelay);
     }
 
     public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight, int p_duration) {
-        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, p_duration, kDEFAULT_DELAY);
+        return this.size(p_startWidth, p_startHeight, p_endWidth, p_endHeight, p_duration, m_defaultStartDelay);
     }
 
     public AnimationSequencer size(int p_startWidth, int p_startHeight, int p_endWidth, int p_endHeight, int p_duration, int p_startDelay) {
