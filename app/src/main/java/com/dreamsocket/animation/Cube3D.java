@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.dreamsocket.animationtest.R;
+
+import java.util.ArrayList;
+
 /**
  * Created by keithpeters on 9/3/15.
  */
@@ -20,6 +24,8 @@ public class Cube3D extends FrameLayout {
     protected int m_height;
     protected float m_rotation;
     protected int m_orientation;
+    protected ArrayList<View> m_sides;
+    protected int m_index;
 
     public Cube3D(Context p_context) {
         this(p_context, null, 0);    }
@@ -34,6 +40,8 @@ public class Cube3D extends FrameLayout {
     }
 
     protected void init() {
+        this.m_sides = new ArrayList<>();
+
         this.m_view1 = new FrameLayout(this.getContext());
         this.m_view1.setBackgroundColor(0xffeeeeee);
         this.addView(this.m_view1);
@@ -43,6 +51,7 @@ public class Cube3D extends FrameLayout {
         this.addView(this.m_view2);
 
         this.m_rotation = 0;
+        this.m_index = -1;
         this.m_orientation = HORIZONTAL;
         this.setSize(100, 100);
     }
@@ -89,38 +98,43 @@ public class Cube3D extends FrameLayout {
     }
 
     protected void rotateHorizontal() {
-        float percent = this.m_rotation / 90;
-        if(this.m_rotation >= 0) {
-            this.m_view1.setPivotX(0);
-            this.m_view2.setPivotX(this.m_width);
-            this.m_view2.setTranslationX(percent * this.m_width - this.m_width);
-            this.m_view2.setRotationY(this.m_rotation - 90);
-        }
-        else {
-            this.m_view1.setPivotX(this.m_width);
-            this.m_view2.setPivotX(0);
-            this.m_view2.setTranslationX(this.m_width + percent * this.m_width);
-            this.m_view2.setRotationY(90 + this.m_rotation);
-        }
-        this.m_view1.setRotationY(this.m_rotation);
+        this.setSides();
+        float rotation = this.m_rotation % 90;
+        float percent = rotation / 90;
+        this.m_view1.setPivotX(0);
+        this.m_view2.setPivotX(this.m_width);
+        this.m_view2.setTranslationX(percent * this.m_width - this.m_width);
+        this.m_view2.setRotationY(rotation - 90);
+        this.m_view1.setRotationY(rotation);
         this.m_view1.setTranslationX(percent * this.m_width);
     }
 
     protected void rotateVertical() {
-        float percent = this.m_rotation / 90;
-        if(this.m_rotation >= 0) {
-            this.m_view1.setPivotY(0);
-            this.m_view2.setPivotY(this.m_height);
-            this.m_view2.setTranslationY(percent * this.m_height - this.m_height);
-            this.m_view2.setRotationX(90 - this.m_rotation);
-        } else {
-            this.m_view1.setPivotY(this.m_height);
-            this.m_view2.setPivotY(0);
-            this.m_view2.setTranslationY(this.m_height + percent * this.m_height);
-            this.m_view2.setRotationX(-this.m_rotation - 90);
-        }
-        this.m_view1.setRotationX(-this.m_rotation);
+        this.setSides();
+        float rotation = this.m_rotation % 90;
+        float percent = rotation / 90;
+        this.m_view1.setPivotY(0);
+        this.m_view2.setPivotY(this.m_height);
+        this.m_view2.setTranslationY(percent * this.m_height - this.m_height);
+        this.m_view2.setRotationX(90 - rotation);
+        this.m_view1.setRotationX(-rotation);
         this.m_view1.setTranslationY(percent * this.m_height);
+    }
+
+
+    protected void setSides() {
+        if(this.m_sides.size() > 0) {
+            int index = (int) (this.m_rotation / 90) % this.m_sides.size();
+            Log.d("stuff", "rotation: " + this.m_rotation);
+            Log.d("stuff", "index: " + index);
+            if(this.m_index != index) {
+                this.m_index = index;
+                this.m_view1.removeAllViews();
+                this.m_view2.removeAllViews();
+                this.m_view1.addView(this.m_sides.get(this.m_index));
+                this.m_view2.addView(this.m_sides.get((this.m_index + 1) % this.m_sides.size()));
+            }
+        }
     }
 
     public void setSize(int p_width, int p_height) {
@@ -129,17 +143,45 @@ public class Cube3D extends FrameLayout {
         this.doLayout();
     }
 
-    public void setViews(View p_view1, View p_view2) {
-        this.m_view1.addView(p_view1);
-        this.m_view2.addView(p_view2);
+    public void setDrawables(int p_resId1, int p_resId2) {
+        View side1 = new View(this.getContext());
+        side1.setBackground(this.getContext().getDrawable(p_resId1));
+        View side2 = new View(this.getContext());
+        side2.setBackground(this.getContext().getDrawable(p_resId2));
+        this.setViews(side1, side2);
     }
 
+    public void setDrawables(int p_resId1, int p_resId2, int p_resId3, int p_resId4) {
+        View side1 = new View(this.getContext());
+        side1.setBackground(this.getContext().getDrawable(p_resId1));
+        View side2 = new View(this.getContext());
+        side2.setBackground(this.getContext().getDrawable(p_resId2));
+        View side3 = new View(this.getContext());
+        side3.setBackground(this.getContext().getDrawable(p_resId3));
+        View side4 = new View(this.getContext());
+        side4.setBackground(this.getContext().getDrawable(p_resId4));
+        this.setViews(side1, side2, side3, side4);
+    }
+
+    public void setViews(View p_view1, View p_view2) {
+        this.m_sides.add(p_view1);
+        this.m_sides.add(p_view2);
+        this.setSides();
+    }
+
+    public void setViews(View p_view1, View p_view2, View p_view3, View p_view4) {
+        this.m_sides.add(p_view1);
+        this.m_sides.add(p_view2);
+        this.m_sides.add(p_view3);
+        this.m_sides.add(p_view4);
+        this.setSides();
+    }
+
+
     public void rotate(float p_angle) {
-        while(p_angle > 90) {
-            p_angle -= 180;
-        }
-        while(p_angle < -90) {
-            p_angle += 180;
+        p_angle %= 360;
+        if(p_angle < -0) {
+            p_angle += 360;
         }
         this.m_rotation = p_angle;
         this.doRotation();
