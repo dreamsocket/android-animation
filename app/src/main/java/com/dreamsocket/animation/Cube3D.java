@@ -1,5 +1,6 @@
 package com.dreamsocket.animation;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -26,6 +27,8 @@ public class Cube3D extends FrameLayout {
     protected int m_orientation;
     protected ArrayList<View> m_sides;
     protected int m_index;
+    protected ValueAnimator m_snapAnimator;
+
 
     public Cube3D(Context p_context) {
         this(p_context, null, 0);    }
@@ -54,6 +57,7 @@ public class Cube3D extends FrameLayout {
         this.m_index = -1;
         this.m_orientation = HORIZONTAL;
         this.setSize(100, 100);
+
     }
 
     protected void doLayout() {
@@ -125,8 +129,6 @@ public class Cube3D extends FrameLayout {
     protected void setSides() {
         if(this.m_sides.size() > 0) {
             int index = (int) (this.m_rotation / 90) % this.m_sides.size();
-            Log.d("stuff", "rotation: " + this.m_rotation);
-            Log.d("stuff", "index: " + index);
             if(this.m_index != index) {
                 this.m_index = index;
                 this.m_view1.removeAllViews();
@@ -135,6 +137,25 @@ public class Cube3D extends FrameLayout {
                 this.m_view2.addView(this.m_sides.get((this.m_index + 1) % this.m_sides.size()));
             }
         }
+    }
+
+    public float snap() {
+        if(this.m_snapAnimator != null) {
+            this.m_snapAnimator.cancel();
+        }
+        float targetRotation = (float)Math.round(this.m_rotation / 90) * 90;
+        float difference = Math.abs(this.m_rotation - targetRotation);
+        this.m_snapAnimator = ValueAnimator.ofFloat(this.m_rotation, targetRotation);
+
+        this.m_snapAnimator.setDuration((long)(500 * difference / 45));
+        this.m_snapAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                rotate((float)animation.getAnimatedValue());
+            }
+        });
+        this.m_snapAnimator.start();
+        return targetRotation;
     }
 
     public void setSize(int p_width, int p_height) {
@@ -185,6 +206,10 @@ public class Cube3D extends FrameLayout {
         }
         this.m_rotation = p_angle;
         this.doRotation();
+    }
+
+    public void rotateBy(float p_angle) {
+        this.rotate(this.m_rotation + p_angle);
     }
 
     public void setOrientation(int p_orientation) {

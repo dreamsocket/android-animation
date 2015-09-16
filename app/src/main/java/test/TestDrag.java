@@ -16,8 +16,6 @@ import java.util.ArrayList;
  */
 public class TestDrag extends AppCompatActivity {
     protected Cube3D m_cube;
-    protected float m_touchX;
-    protected float m_rotation;
     protected int m_size = 800;
 
     @Override
@@ -31,25 +29,22 @@ public class TestDrag extends AppCompatActivity {
 
         this.m_cube.setDrawables(R.drawable.cat_1, R.drawable.cat_2, R.drawable.ewok, R.drawable.monkey);
 //        this.m_cube.setOrientation(Cube3D.VERTICAL);
-        this.m_rotation = 0;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                this.m_touchX = event.getX();
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                float newX = event.getX();
-                float delta = newX - this.m_touchX;
-                this.m_rotation += delta / this.m_size * 90;
-                this.m_touchX = newX;
-                this.m_cube.rotate(this.m_rotation);
+                int index = event.getActionIndex();
+                float delta = event.getX() - event.getHistoricalX(index);
+                this.m_cube.rotateBy(delta * 0.15f);
                 break;
 
             case MotionEvent.ACTION_UP:
+                this.m_cube.snap();
                 break;
 
             default:
